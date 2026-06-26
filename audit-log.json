@@ -1,1 +1,45 @@
-[]
+[
+  {
+    "timestamp": "2026-06-26T10:20:24.947Z",
+    "documentId": 3649,
+    "documentTitle": "Test Assignment",
+    "assignmentsDeleted": [
+      {
+        "id": 232,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-06-26T10:16:58.000Z",
+        "message": null,
+        "userStatuses": []
+      },
+      {
+        "id": 233,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-06-26T10:17:14.000Z",
+        "message": "Auto-assigned: GAM Reviewer Review (Stage 2 of 4)",
+        "userStatuses": []
+      },
+      {
+        "id": 234,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-06-26T10:18:17.000Z",
+        "message": "Auto-assigned: GAM Approver Review (Stage 3 of 4)",
+        "userStatuses": []
+      },
+      {
+        "id": 235,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-06-26T10:19:13.000Z",
+        "message": "Auto-assigned: Auditor Review (Stage 4 of 4)",
+        "userStatuses": []
+      }
+    ]
+  }
+]
