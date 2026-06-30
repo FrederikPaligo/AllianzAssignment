@@ -41,5 +41,138 @@
         "userStatuses": []
       }
     ]
+  },
+  {
+    "timestamp": "2026-06-30T08:23:14.636Z",
+    "documentId": 3214,
+    "documentTitle": "2 Consolidation",
+    "assignmentsDeleted": [
+      {
+        "id": 210,
+        "type": "review",
+        "issuer": "Gejiani",
+        "issuerId": 3,
+        "created": "2026-06-24T11:30:17.000Z",
+        "message": null,
+        "userStatuses": []
+      },
+      {
+        "id": 211,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-06-24T11:31:39.000Z",
+        "message": "Auto-assigned: GAM Reviewer Review (Stage 2 of 4)",
+        "userStatuses": []
+      },
+      {
+        "id": 212,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-06-24T11:32:59.000Z",
+        "message": "Auto-assigned: GAM Approver Review (Stage 3 of 4)",
+        "userStatuses": []
+      },
+      {
+        "id": 213,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-06-24T11:35:13.000Z",
+        "message": "Returned for revision: GAM Reviewer Review (sent back by GAM Approver Review)",
+        "userStatuses": []
+      },
+      {
+        "id": 214,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-06-24T11:36:42.000Z",
+        "message": "Returned for revision: GAM Author Review (sent back by GAM Reviewer Review)",
+        "userStatuses": []
+      },
+      {
+        "id": 215,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-06-24T11:37:37.000Z",
+        "message": "Auto-assigned: GAM Reviewer Review (Stage 2 of 4)",
+        "userStatuses": []
+      },
+      {
+        "id": 216,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-06-24T11:38:28.000Z",
+        "message": "Auto-assigned: GAM Approver Review (Stage 3 of 4)",
+        "userStatuses": []
+      },
+      {
+        "id": 217,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-06-24T11:39:31.000Z",
+        "message": "Auto-assigned: Auditor Review (Stage 4 of 4)",
+        "userStatuses": []
+      },
+      {
+        "id": 218,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-06-24T11:41:30.000Z",
+        "message": "Returned for revision: GAM Reviewer Review (sent back by Auditor Review)",
+        "userStatuses": []
+      },
+      {
+        "id": 219,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-06-24T11:43:07.000Z",
+        "message": "Auto-assigned: GAM Approver Review (Stage 3 of 4)",
+        "userStatuses": []
+      },
+      {
+        "id": 237,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-06-30T08:10:09.000Z",
+        "message": null,
+        "userStatuses": []
+      },
+      {
+        "id": 238,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-06-30T08:13:33.000Z",
+        "message": "Auto-assigned: GAM Reviewer Review (Stage 2 of 4)",
+        "userStatuses": []
+      },
+      {
+        "id": 239,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-06-30T08:16:49.000Z",
+        "message": "Auto-assigned: GAM Approver Review (Stage 3 of 4)",
+        "userStatuses": []
+      },
+      {
+        "id": 240,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-06-30T08:19:52.000Z",
+        "message": "Auto-assigned: Auditor Review (Stage 4 of 4)",
+        "userStatuses": []
+      }
+    ]
   }
 ]
