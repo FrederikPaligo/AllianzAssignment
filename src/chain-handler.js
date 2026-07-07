@@ -83,18 +83,30 @@ class ChainHandler {
 
     // --- Route based on current state ---
 
+    let result;
+
     // State: author has a contribution (waiting for author to finish)
     if (tracker && tracker.stage === "author_revision") {
-      return this._handleAuthorResponse(chain, documentId, lang, status, tracker);
+      result = await this._handleAuthorResponse(chain, documentId, lang, status, tracker);
     }
-
     // State: no tracker = first event for this doc = Group 1 just acted
-    if (!tracker) {
-      return this._handleFirstEvent(chain, documentId, documentTitle, lang, status);
+    else if (!tracker) {
+      result = await this._handleFirstEvent(chain, documentId, documentTitle, lang, status);
+    }
+    // State: tracked stage 0-3 = that group just acted
+    else {
+      result = await this._handleStageResponse(chain, documentId, lang, status, tracker);
     }
 
-    // State: tracked stage 0-3 = that group just acted
-    return this._handleStageResponse(chain, documentId, lang, status, tracker);
+    // If we successfully processed the event (advanced/reverted the chain),
+    // clear the dedup entry so the NEXT stage's approval isn't blocked.
+    // Without this, rapid approvals (e.g. Stage 3 and Stage 4 within 30s)
+    // would be deduplicated because they share the same key (docId:approved).
+    if (result) {
+      delete this._recentEvents[dedupKey];
+    }
+
+    return result;
   }
 
   // --- First event: Group 1 just acted on the manual assignment ---
