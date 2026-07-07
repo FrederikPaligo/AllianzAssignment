@@ -100,7 +100,7 @@ app.get("/health", (req, res) => {
     status: "ok",
     service: "paligo-review-chain",
     instance: process.env.PALIGO_INSTANCE,
-    version: "4.1.0",
+    version: "4.2.0",
   });
 });
 
