@@ -260,5 +260,75 @@
         "userStatuses": []
       }
     ]
+  },
+  {
+    "timestamp": "2026-07-07T09:58:06.620Z",
+    "documentId": 3656,
+    "documentTitle": "Test Assignment copy 2",
+    "assignmentsDeleted": [
+      {
+        "id": 268,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-07-07T09:39:29.000Z",
+        "message": null,
+        "userStatuses": []
+      },
+      {
+        "id": 270,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-07-07T09:40:13.000Z",
+        "message": "Auto-assigned: GAM Reviewer Review (Stage 2 of 4)",
+        "userStatuses": []
+      },
+      {
+        "id": 272,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-07-07T09:41:17.000Z",
+        "message": "Auto-assigned: GAM Approver Review (Stage 3 of 4)",
+        "userStatuses": []
+      },
+      {
+        "id": 274,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-07-07T09:42:22.000Z",
+        "message": "Auto-assigned: Auditor Review (Stage 4 of 4)",
+        "userStatuses": []
+      },
+      {
+        "id": 277,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-07-07T09:54:50.000Z",
+        "message": "Returned for revision: GAM Reviewer Review (sent back by Auditor Review)",
+        "userStatuses": []
+      },
+      {
+        "id": 278,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-07-07T09:55:58.000Z",
+        "message": "Auto-assigned: GAM Approver Review (Stage 3 of 4)",
+        "userStatuses": []
+      },
+      {
+        "id": 279,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-07-07T09:58:00.000Z",
+        "message": "Auto-assigned: Auditor Review (Stage 4 of 4)",
+        "userStatuses": []
+      }
+    ]
   }
 ]
