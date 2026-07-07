@@ -364,6 +364,30 @@ class PaligoClient {
     }
   }
 
+  /**
+   * Fetch all assignments for a specific document.
+   * Returns an array of assignment objects sorted by created_at (newest first).
+   */
+  async getAssignmentsForDocument(documentId) {
+    const allAssignments = [];
+    let page = 1;
+    let totalPages = 1;
+
+    while (page <= totalPages) {
+      const resp = await axios.get(
+        `${this.baseUrl}/assignments/?page=${page}`,
+        { auth: this.auth }
+      );
+      allAssignments.push(...resp.data.assignments);
+      totalPages = resp.data.total_pages;
+      page++;
+    }
+
+    return allAssignments
+      .filter(a => a.document_id === documentId)
+      .sort((a, b) => b.created_at - a.created_at); // newest first
+  }
+
   async listGroups() {
     const response = await axios.get(`${this.baseUrl}/groups`, { auth: this.auth });
     return response.data;
