@@ -174,5 +174,48 @@
         "userStatuses": []
       }
     ]
+  },
+  {
+    "timestamp": "2026-07-07T09:16:58.294Z",
+    "documentId": 3660,
+    "documentTitle": "Test Assignment copy 4",
+    "assignmentsDeleted": [
+      {
+        "id": 254,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-07-07T09:12:56.000Z",
+        "message": null,
+        "userStatuses": []
+      },
+      {
+        "id": 255,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-07-07T09:13:22.000Z",
+        "message": "Auto-assigned: GAM Reviewer Review (Stage 2 of 4)",
+        "userStatuses": []
+      },
+      {
+        "id": 256,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-07-07T09:14:17.000Z",
+        "message": "Auto-assigned: GAM Approver Review (Stage 3 of 4)",
+        "userStatuses": []
+      },
+      {
+        "id": 257,
+        "type": "review",
+        "issuer": "Paligo Support",
+        "issuerId": 2,
+        "created": "2026-07-07T09:16:00.000Z",
+        "message": "Auto-assigned: Auditor Review (Stage 4 of 4)",
+        "userStatuses": []
+      }
+    ]
   }
 ]
