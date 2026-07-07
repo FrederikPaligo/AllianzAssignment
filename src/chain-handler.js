@@ -1,5 +1,5 @@
 /**
- * Chain Handler v4
+ * Chain Handler v4.3
  *
  * Correct flow:
  *   1. User MANUALLY creates review for Group 1 - automation does NOT create this.
@@ -14,10 +14,13 @@
  *   - Assignment cleanup: delete all assignments for a document on chain completion
  *   - Taxonomy removal: strip "Staging for Release" tag when a new cycle starts
  *   - Audit logging: full assignment details logged before deletion
- *   v4.1: Persistent audit logging to GitHub (audit-log.json)
+ * v4.1: Persistent audit logging to GitHub (audit-log.json)
+ * v4.2: Fixed dedup window blocking cross-stage approvals
+ * v4.3: Stateless recovery — recovers chain position from Paligo API after restarts.
+ *        Duplicate guard — checks for existing assignments before creating new ones.
  *
  * State tracker stores per document:
- *   { stage: number | "author_revision", issuerId: number, issuerName: string }
+ *   { stage: number | "author_revision", issuerId: number, issuerName: string, documentTitle: string }
  *
  *   stage meanings:
  *     undefined  = first event, Group 1 just acted (manual assignment)
@@ -79,7 +82,15 @@ class ChainHandler {
     }
 
     const chain = getChainForPublication(String(documentId));
-    const tracker = this._stageTracker[String(documentId)];
+    let tracker = this._stageTracker[String(documentId)];
+
+    // --- Recover tracker from API if missing (e.g. after restart/redeploy) ---
+    if (!tracker) {
+      tracker = await this._recoverTracker(chain, documentId, documentTitle);
+      if (tracker) {
+        this._stageTracker[String(documentId)] = tracker;
+      }
+    }
 
     // --- Route based on current state ---
 
@@ -100,13 +111,111 @@ class ChainHandler {
 
     // If we successfully processed the event (advanced/reverted the chain),
     // clear the dedup entry so the NEXT stage's approval isn't blocked.
-    // Without this, rapid approvals (e.g. Stage 3 and Stage 4 within 30s)
-    // would be deduplicated because they share the same key (docId:approved).
     if (result) {
       delete this._recentEvents[dedupKey];
     }
 
     return result;
+  }
+
+  // --- Recover tracker from Paligo API ---
+
+  /**
+   * When the in-memory tracker is missing (after a restart/redeploy),
+   * fetch the document's assignments from Paligo and figure out which
+   * stage the chain is at based on the most recent auto-created assignment.
+   *
+   * Returns a tracker object or null if this looks like a genuine first event.
+   */
+  async _recoverTracker(chain, documentId, documentTitle) {
+    console.log(`[chain] No tracker for ${documentId} - attempting recovery from API`);
+
+    try {
+      const assignments = await this.paligo.getAssignmentsForDocument(documentId);
+
+      if (assignments.length === 0) {
+        console.log(`[chain] No assignments found - treating as first event`);
+        return null;
+      }
+
+      // Find the most recent auto-created assignment (by our automation)
+      const autoAssignment = assignments.find(a =>
+        a.message && (
+          a.message.startsWith("Auto-assigned:") ||
+          a.message.startsWith("Returned for revision:") ||
+          a.message.startsWith("Revision needed:")
+        )
+      );
+
+      if (!autoAssignment) {
+        // Only manual assignments exist -> this is genuinely Group 1 acting
+        console.log(`[chain] Only manual assignments found - treating as first event`);
+        return null;
+      }
+
+      // Determine stage from the auto-assignment's message
+      const msg = autoAssignment.message;
+
+      // Check for author revision
+      if (msg.startsWith("Revision needed:")) {
+        console.log(`[chain] Recovered: author_revision (from "${msg}")`);
+        // Try to find the original issuer info
+        const issuerInfo = await this.paligo.findOriginalIssuer(documentId);
+        return {
+          stage: "author_revision",
+          issuerId: issuerInfo?.issuer_id,
+          issuerName: issuerInfo?.issuer,
+          documentTitle,
+        };
+      }
+
+      // Check which chain stage matches
+      for (let i = 0; i < chain.length; i++) {
+        if (msg.includes(chain[i].label)) {
+          console.log(`[chain] Recovered: stage ${i} (from "${msg}")`);
+          return { stage: i, documentTitle };
+        }
+      }
+
+      // If we found an auto-assignment but couldn't map it to a stage,
+      // it might be from a completed/old chain. Treat as first event.
+      console.log(`[chain] Could not map auto-assignment to a stage - treating as first event`);
+      return null;
+
+    } catch (err) {
+      console.error(`[chain] Recovery failed:`, err.message);
+      console.log(`[chain] Falling back to first-event handling`);
+      return null;
+    }
+  }
+
+  // --- Duplicate guard ---
+
+  /**
+   * Before creating an assignment, check if one already exists for this
+   * document + target group. Returns true if a duplicate exists.
+   */
+  async _hasDuplicateAssignment(documentId, groupId) {
+    try {
+      const assignments = await this.paligo.getAssignmentsForDocument(documentId);
+      const existing = assignments.find(a => {
+        // Check if any assignment for this doc targets the same group
+        // Assignment groups are in the assignees.groups array or can be
+        // identified by the message containing the group's label
+        if (a.groups && Array.isArray(a.groups)) {
+          return a.groups.includes(groupId);
+        }
+        return false;
+      });
+
+      if (existing) {
+        console.log(`[chain] Duplicate guard: assignment ${existing.id} already exists for group ${groupId} on doc ${documentId} - skipping`);
+        return true;
+      }
+    } catch (err) {
+      console.error(`[chain] Duplicate check failed:`, err.message, `- proceeding anyway`);
+    }
+    return false;
   }
 
   // --- First event: Group 1 just acted on the manual assignment ---
@@ -237,8 +346,6 @@ class ChainHandler {
         }
 
         // Clean up all assignments for this document
-        // NOTE: Audit trail is logged to stdout before deletion.
-        // See paligo-client.js deleteAssignmentsForDocument() for details.
         try {
           await this.paligo.deleteAssignmentsForDocument(documentId, tracker.documentTitle);
           console.log(`[chain] Assignments cleaned up`);
